@@ -1,0 +1,11 @@
+services:
+  db:
+    image: mysql:5.7
+    restart: always
+    environment:
+      MYSQL_DATABASE: 'hiber'
+      MYSQL_USER: 'hiber'
+      MYSQL_PASSWORD: 'hiber'
+      MYSQL_ROOT_PASSWORD: 'hiber'
+    ports:
+      - '3306:3306'
