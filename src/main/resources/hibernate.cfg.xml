@@ -11,7 +11,7 @@
         <property name="hibernate.connection.username">hiber</property>
         <property name="hibernate.connection.password">hiber</property>
         <property name="hibernate.connection.pool_size">5</property>
-        <property name="hibernate.hbm2ddl.auto">update</property>
+        <property name="hibernate.hbm2ddl.auto">create</property>
         <property name="hibernate.cache.provider_class">org.hibernate.connection.C3P0ConnectionProvider</property>
 
 
@@ -25,7 +25,13 @@
         <property name="hibernate.show_sql">true</property>
         <property name="hibernate.format_sql">true</property>
 
+        <mapping class="src.model.Address"/>
+        <mapping class="src.model.FieldOfStudy"/>
+        <mapping class="src.model.Person"/>
+        <mapping class="src.model.Student"/>
         <mapping class="src.model.Subject"/>
+        <mapping class="src.model.Teacher"/>
+        <mapping class="src.model.Test"/>
 
     </session-factory>
 </hibernate-configuration>

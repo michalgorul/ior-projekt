@@ -7,19 +7,32 @@ import src.model.Subject;
 
 public class SubjectDao {
 
-    public Subject get(int id) {
-        Session session = HibernateSession.INSTANCE.getSessionFactory().openSession();
-        Subject subject = session.get(Subject.class, id);
-        session.close();
-        return subject;
+    public Subject getById(int id) {
+        Subject subject = null;
+        try (Session session = HibernateSession.INSTANCE.getSessionFactory().openSession()) {
+            subject = (Subject) session
+                    .createQuery(
+                            "select s " +
+                                    "from Subject s " +
+                                    "left join fetch s.students " +
+                                    "where s.id = :id")
+                    .setParameter("id", id)
+                    .uniqueResult();
+            session.close();
+            return subject;
+        }
+        catch (Exception ex){
+            ex.printStackTrace();
+        }
+        return null;
     }
 
-    public void save() {
+    public void save(Subject subject) {
         Session session = HibernateSession.INSTANCE.getSessionFactory().openSession();
         Transaction transaction = session.getTransaction();
         transaction.begin();
         try {
-            session.persist(new Subject("IOR"));
+            session.persist(subject);
             transaction.commit();
         } catch (Exception exception) {
             transaction.rollback();
