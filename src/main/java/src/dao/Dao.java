@@ -1,5 +1,7 @@
 package src.dao;
 
+import src.model.Address;
+
 import java.util.List;
 
 public interface Dao<T> {
@@ -10,6 +12,6 @@ public interface Dao<T> {
 
     void save(T t);
 
-    void update(T t);
+    T update(T existing, T updated);
 
 }

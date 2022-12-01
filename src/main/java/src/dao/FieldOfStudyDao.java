@@ -3,6 +3,7 @@ package src.dao;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import src.HibernateSession;
+import src.model.Address;
 import src.model.FieldOfStudy;
 
 import java.util.ArrayList;
@@ -45,8 +46,24 @@ public class FieldOfStudyDao implements Dao<FieldOfStudy> {
     }
 
     @Override
-    public void update(FieldOfStudy fieldOfStudy) {
-
+    public FieldOfStudy update(FieldOfStudy existing, FieldOfStudy updated) {
+        Session session = HibernateSession.INSTANCE.getSessionFactory().openSession();
+        Transaction transaction = session.getTransaction();
+        FieldOfStudy fieldOfStudyMerged = null;
+        transaction.begin();
+        try {
+            session.evict(existing);
+            existing.setName(updated.getName());
+            existing.setType(updated.getType());
+            existing.setStudents(updated.getStudents());
+            fieldOfStudyMerged = (FieldOfStudy) session.merge(existing);
+            transaction.commit();
+        } catch (Exception exception) {
+            transaction.rollback();
+            exception.printStackTrace();
+        }
+        session.close();
+        return fieldOfStudyMerged;
     }
 
 }

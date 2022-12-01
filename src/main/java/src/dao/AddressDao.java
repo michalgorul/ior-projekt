@@ -46,7 +46,24 @@ public class AddressDao implements Dao<Address> {
     }
 
     @Override
-    public void update(Address address) {
-
+    public Address update(Address existing, Address updated) {
+        Session session = HibernateSession.INSTANCE.getSessionFactory().openSession();
+        Transaction transaction = session.getTransaction();
+        Address mergedAddress = null;
+        transaction.begin();
+        try {
+            session.evict(existing);
+            existing.setCountry(updated.getCountry());
+            existing.setCity(updated.getCity());
+            existing.setPostalCode(updated.getPostalCode());
+            existing.setStreet(updated.getStreet());
+            mergedAddress = (Address) session.merge(existing);
+            transaction.commit();
+        } catch (Exception exception) {
+            transaction.rollback();
+            exception.printStackTrace();
+        }
+        session.close();
+        return mergedAddress;
     }
 }

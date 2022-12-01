@@ -3,6 +3,7 @@ package src.dao;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import src.HibernateSession;
+import src.model.Student;
 import src.model.Subject;
 
 import java.util.ArrayList;
@@ -52,7 +53,23 @@ public class SubjectDao implements Dao<Subject> {
     }
 
     @Override
-    public void update(Subject subject) {
-
+    public Subject update(Subject existing, Subject updated) {
+        Session session = HibernateSession.INSTANCE.getSessionFactory().openSession();
+        Transaction transaction = session.getTransaction();
+        Subject subjectMerged = null;
+        transaction.begin();
+        try {
+            session.evict(existing);
+            existing.setName(updated.getName());
+            existing.setStudents(updated.getStudents());
+            existing.setTests(updated.getTests());
+            subjectMerged = (Subject) session.merge(existing);
+            transaction.commit();
+        } catch (Exception exception) {
+            transaction.rollback();
+            exception.printStackTrace();
+        }
+        session.close();
+        return subjectMerged;
     }
 }

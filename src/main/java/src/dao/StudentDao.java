@@ -46,8 +46,30 @@ public class StudentDao implements Dao<Student> {
     }
 
     @Override
-    public void update(Student student) {
-
+    public Student update(Student existing, Student updated) {
+        Session session = HibernateSession.INSTANCE.getSessionFactory().openSession();
+        Transaction transaction = session.getTransaction();
+        Student studentMerged = null;
+        transaction.begin();
+        try {
+            session.evict(existing);
+            existing.setSName(updated.getSName());
+            existing.setFName(updated.getFName());
+            existing.setEmail(updated.getEmail());
+            existing.setIndexNo(updated.getIndexNo());
+            existing.setSemester(updated.getSemester());
+            existing.setAddress(updated.getAddress());
+            existing.setFieldOfStudy(updated.getFieldOfStudy());
+            existing.setSubjects(updated.getSubjects());
+            existing.setTests(updated.getTests());
+            studentMerged = (Student) session.merge(existing);
+            transaction.commit();
+        } catch (Exception exception) {
+            transaction.rollback();
+            exception.printStackTrace();
+        }
+        session.close();
+        return studentMerged;
     }
 
 }

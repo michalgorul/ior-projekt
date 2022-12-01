@@ -45,8 +45,24 @@ public class PersonDao  implements Dao<Person> {
     }
 
     @Override
-    public void update(Person person) {
-
+    public Person update(Person existing, Person updated) {
+        Session session = HibernateSession.INSTANCE.getSessionFactory().openSession();
+        Transaction transaction = session.getTransaction();
+        Person personMerged = null;
+        transaction.begin();
+        try {
+            session.evict(existing);
+            existing.setSName(updated.getSName());
+            existing.setFName(updated.getFName());
+            existing.setEmail(updated.getEmail());
+            personMerged = (Person) session.merge(existing);
+            transaction.commit();
+        } catch (Exception exception) {
+            transaction.rollback();
+            exception.printStackTrace();
+        }
+        session.close();
+        return personMerged;
     }
 
 }

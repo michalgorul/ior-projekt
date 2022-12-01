@@ -3,6 +3,7 @@ package src.dao;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import src.HibernateSession;
+import src.model.Subject;
 import src.model.Teacher;
 
 import java.util.ArrayList;
@@ -46,7 +47,25 @@ public class TeacherDao implements Dao<Teacher> {
     }
 
     @Override
-    public void update(Teacher teacher) {
-
+    public Teacher update(Teacher existing, Teacher updated) {
+        Session session = HibernateSession.INSTANCE.getSessionFactory().openSession();
+        Transaction transaction = session.getTransaction();
+        Teacher teacherMerged = null;
+        transaction.begin();
+        try {
+            session.evict(existing);
+            existing.setFName(updated.getFName());
+            existing.setSName(updated.getSName());
+            existing.setEmail(updated.getEmail());
+            existing.setTitle(updated.getTitle());
+            existing.setAddress(updated.getAddress());
+            teacherMerged = (Teacher) session.merge(existing);
+            transaction.commit();
+        } catch (Exception exception) {
+            transaction.rollback();
+            exception.printStackTrace();
+        }
+        session.close();
+        return teacherMerged;
     }
 }
