@@ -31,17 +31,17 @@ public class Loader {
         testDao = new TestDao();
     }
 
-    public void load(){
-        loadAddresses();
-        loadFieldsOfStudies();
-        loadPeople();
-        loadStudents();
-        loadSubjects();
+    public void load() {
+//        loadAddresses();
+//        loadFieldsOfStudies();
+//        loadPeople();
+//        loadStudents();
+//        loadSubjects();
         loadTeachers();
         loadTests();
     }
 
-    private List<Address> getAddresses(){
+    private List<Address> getAddresses() {
         Address address1 = new Address("Poland", "Katowice", "40-400", "Paderewskiego");
         Address address2 = new Address("Poland", "Warszawa", "80-100", "Warszawska");
         Address address3 = new Address("Poland", "Sopot", "50-800", "Korfantego");
@@ -55,12 +55,7 @@ public class Loader {
                 address7, address8).collect(Collectors.toList());
     }
 
-    private void loadAddresses() {
-        List<Address> list = getAddresses();
-        list.forEach(entry -> addressDao.save(entry));
-    }
-
-    private void loadFieldsOfStudies() {
+    List<FieldOfStudy> getFieldOfStudies() {
         FieldOfStudy fieldOfStudy1 = new FieldOfStudy("Informatyka", "SSI");
         FieldOfStudy fieldOfStudy2 = new FieldOfStudy("Informatyka", "SSM");
         FieldOfStudy fieldOfStudy3 = new FieldOfStudy("Automatyka i Robotyka", "SSI");
@@ -70,10 +65,18 @@ public class Loader {
         FieldOfStudy fieldOfStudy7 = new FieldOfStudy("Politologia", "SSI");
         FieldOfStudy fieldOfStudy8 = new FieldOfStudy("Politologia", "SSM");
 
-        Stream.of(fieldOfStudy1, fieldOfStudy2, fieldOfStudy3,
-                        fieldOfStudy4, fieldOfStudy5, fieldOfStudy6, fieldOfStudy7, fieldOfStudy8)
-                .collect(Collectors.toList())
-                .forEach(entry -> fieldOfStudyDao.save(entry));
+        return Stream.of(fieldOfStudy1, fieldOfStudy2, fieldOfStudy3, fieldOfStudy4, fieldOfStudy5, fieldOfStudy6,
+                        fieldOfStudy7, fieldOfStudy8).collect(Collectors.toList());
+    }
+
+    private void loadAddresses() {
+        List<Address> list = getAddresses();
+        list.forEach(entry -> addressDao.save(entry));
+    }
+
+    private void loadFieldsOfStudies() {
+        List<FieldOfStudy> fieldOfStudies = getFieldOfStudies();
+        fieldOfStudies.forEach(entry -> fieldOfStudyDao.save(entry));
     }
 
     private void loadPeople() {
@@ -93,14 +96,15 @@ public class Loader {
 
     private void loadStudents() {
         List<Address> addresses = getAddresses();
-        Student student1 = new Student(addresses.get(5), 282642, 2);
-        Student student2 = new Student(addresses.get(2), 282642, 1);
-        Student student3 = new Student(addresses.get(1), 282542, 3);
-        Student student4 = new Student(addresses.get(4), 282632, 5);
-        Student student5 = new Student(addresses.get(3), 281642, 6);
-        Student student6 = new Student(addresses.get(7), 262642, 1);
-        Student student7 = new Student(addresses.get(0), 482642, 7);
-        Student student8 = new Student(addresses.get(6), 288682, 1);
+        List<FieldOfStudy> fieldOfStudies = getFieldOfStudies();
+        Student student1 = new Student(addresses.get(5), 282642, 2, fieldOfStudies.get(0));
+        Student student2 = new Student(addresses.get(2), 282642, 1, fieldOfStudies.get(1));
+        Student student3 = new Student(addresses.get(1), 282542, 3, fieldOfStudies.get(2));
+        Student student4 = new Student(addresses.get(4), 282632, 5, fieldOfStudies.get(3));
+        Student student5 = new Student(addresses.get(3), 281642, 6, fieldOfStudies.get(4));
+        Student student6 = new Student(addresses.get(7), 262642, 1, fieldOfStudies.get(5));
+        Student student7 = new Student(addresses.get(0), 482642, 7, fieldOfStudies.get(6));
+        Student student8 = new Student(addresses.get(6), 288682, 1, fieldOfStudies.get(7));
 
         Stream.of(student1, student2, student3, student4, student5, student6, student7, student8)
                 .collect(Collectors.toList())

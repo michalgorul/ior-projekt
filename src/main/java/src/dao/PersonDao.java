@@ -30,6 +30,7 @@ public class PersonDao  implements Dao<Person> {
         return people;
     }
 
+//    TODO try to load field of study from hibernate
     public void save(Person person) {
         Session session = HibernateSession.INSTANCE.getSessionFactory().openSession();
         Transaction transaction = session.getTransaction();

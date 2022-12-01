@@ -23,8 +23,8 @@ public class Test {
 
     @ManyToOne(
             cascade = {CascadeType.MERGE, CascadeType.PERSIST},
-            fetch = FetchType.LAZY,
-            optional = false)
+            fetch = FetchType.LAZY
+    )
     @JoinColumn(
             name = "subject_id",
             foreignKey = @ForeignKey(name = "fk_test_subject"),
@@ -34,8 +34,8 @@ public class Test {
 
     @ManyToOne(
             cascade = {CascadeType.MERGE, CascadeType.PERSIST},
-            fetch = FetchType.LAZY,
-            optional = false)
+            fetch = FetchType.LAZY
+    )
     @JoinColumn(
             name = "student_id",
             foreignKey = @ForeignKey(name = "fk_test_student"),

@@ -28,8 +28,8 @@ public class Student extends Person implements Serializable {
 
     @ManyToOne(
             cascade = {CascadeType.MERGE, CascadeType.PERSIST},
-            fetch = FetchType.LAZY,
-            optional = false)
+            fetch = FetchType.LAZY
+    )
     @JoinColumn(
             name = "field_of_study_id",
             foreignKey = @ForeignKey(name = "fk_field_student"),
@@ -48,10 +48,11 @@ public class Student extends Person implements Serializable {
     @OneToMany(cascade = CascadeType.DETACH, fetch = FetchType.LAZY, mappedBy = "student")
     private Set<Test> tests = new HashSet<>(10);
 
-    public Student(Address address, int indexNo, int semester) {
+    public Student(Address address, int indexNo, int semester, FieldOfStudy fieldOfStudy) {
         this.address = address;
         this.indexNo = indexNo;
         this.semester = semester;
+        this.fieldOfStudy = fieldOfStudy;
     }
 
     public void addSubject(Subject subject) {
