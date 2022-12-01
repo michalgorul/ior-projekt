@@ -42,4 +42,9 @@ public class Test {
             insertable = false,
             updatable = false)
     private Student student;
+
+    public Test(Date date, int grade){
+        this.date = date;
+        this.grade = grade;
+    }
 }
