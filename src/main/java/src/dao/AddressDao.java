@@ -44,4 +44,9 @@ public class AddressDao implements Dao<Address> {
         }
         session.close();
     }
+
+    @Override
+    public void update(Address address) {
+
+    }
 }

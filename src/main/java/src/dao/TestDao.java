@@ -46,4 +46,9 @@ public class TestDao implements Dao<Test> {
         }
         session.close();
     }
+
+    @Override
+    public void update(Test test) {
+
+    }
 }

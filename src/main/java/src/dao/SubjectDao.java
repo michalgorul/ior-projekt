@@ -50,4 +50,9 @@ public class SubjectDao implements Dao<Subject> {
         }
         session.close();
     }
+
+    @Override
+    public void update(Subject subject) {
+
+    }
 }

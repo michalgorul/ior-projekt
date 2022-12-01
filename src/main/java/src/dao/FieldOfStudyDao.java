@@ -44,4 +44,9 @@ public class FieldOfStudyDao implements Dao<FieldOfStudy> {
         session.close();
     }
 
+    @Override
+    public void update(FieldOfStudy fieldOfStudy) {
+
+    }
+
 }

@@ -44,4 +44,9 @@ public class PersonDao  implements Dao<Person> {
         session.close();
     }
 
+    @Override
+    public void update(Person person) {
+
+    }
+
 }

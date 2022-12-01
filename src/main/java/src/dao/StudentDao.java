@@ -45,4 +45,9 @@ public class StudentDao implements Dao<Student> {
         session.close();
     }
 
+    @Override
+    public void update(Student student) {
+
+    }
+
 }

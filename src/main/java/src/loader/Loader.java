@@ -139,8 +139,19 @@ public class Loader {
                 .forEach(entry -> teacherDao.save(entry));
     }
 
-    //    TODO: fill tests
     private void loadTests() {
+        Test test1 = new Test(new Date(1669907466884L), 5);
+        Test test2 = new Test(new Date(1669907466884L), 2);
+        Test test3 = new Test(new Date(1669907465884L), 3);
+        Test test4 = new Test(new Date(1669907436884L), 4);
+        Test test5 = new Test(new Date(1669907466884L), 4);
+        Test test6 = new Test(new Date(1669905466884L), 5);
+        Test test7 = new Test(new Date(1669906466884L), 5);
+        Test test8 = new Test(new Date(1669902466884L), 2);
+
+        Stream.of(test1, test2, test3, test4, test5, test6, test7, test8)
+                .collect(Collectors.toList())
+                .forEach(event -> testDao.save((event)));
 
     }
 }
