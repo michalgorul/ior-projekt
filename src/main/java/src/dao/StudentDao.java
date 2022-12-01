@@ -5,13 +5,30 @@ import org.hibernate.Transaction;
 import src.HibernateSession;
 import src.model.Student;
 
-public class StudentDao {
+import java.util.ArrayList;
+import java.util.List;
+
+public class StudentDao implements Dao<Student> {
 
     public Student getById(int id) {
         Session session = HibernateSession.INSTANCE.getSessionFactory().openSession();
         Student student = session.get(Student.class, id);
         session.close();
         return student;
+    }
+
+    @Override
+    public List<Student> getAll() {
+        Session session = HibernateSession.INSTANCE.getSessionFactory().openSession();
+        List<Student> students = new ArrayList<>();
+        try {
+            students = session.createQuery("SELECT s from Student s").getResultList();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+        session.close();
+        return students;
     }
 
     public void save(Student student) {

@@ -48,8 +48,19 @@ public class Student extends Person implements Serializable {
     @OneToMany(cascade = CascadeType.DETACH, fetch = FetchType.LAZY, mappedBy = "student")
     private Set<Test> tests = new HashSet<>(10);
 
-    public void addSubject(Subject subject){
+    public Student(Address address, int indexNo, int semester) {
+        this.address = address;
+        this.indexNo = indexNo;
+        this.semester = semester;
+    }
+
+    public void addSubject(Subject subject) {
         this.subjects.add(subject);
         subject.getStudents().add(this);
+    }
+
+    public void addTest(Test test) {
+        this.tests.add(test);
+        test.setStudent(this);
     }
 }

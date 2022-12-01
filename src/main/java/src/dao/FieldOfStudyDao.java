@@ -5,12 +5,29 @@ import org.hibernate.Transaction;
 import src.HibernateSession;
 import src.model.FieldOfStudy;
 
-public class FieldOfStudyDao {
+import java.util.ArrayList;
+import java.util.List;
+
+public class FieldOfStudyDao implements Dao<FieldOfStudy> {
     public FieldOfStudy getById(int id) {
         Session session = HibernateSession.INSTANCE.getSessionFactory().openSession();
         FieldOfStudy fieldOfStudy = session.get(FieldOfStudy.class, id);
         session.close();
         return fieldOfStudy;
+    }
+
+    @Override
+    public List<FieldOfStudy> getAll() {
+        Session session = HibernateSession.INSTANCE.getSessionFactory().openSession();
+        List<FieldOfStudy> fieldOfStudies = new ArrayList<>();
+        try {
+            fieldOfStudies = session.createQuery("SELECT f from FieldOfStudy f").getResultList();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+        session.close();
+        return fieldOfStudies;
     }
 
     public void save(FieldOfStudy fieldOfStudy) {
