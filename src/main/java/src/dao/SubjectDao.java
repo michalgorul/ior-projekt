@@ -26,7 +26,10 @@ public class SubjectDao implements Dao<Subject> {
 
     @Override
     public List<Subject> getAll() {
-        Session session = HibernateSession.INSTANCE.getSessionFactory().openSession();
+        Session session = HibernateSession.INSTANCE.getSessionFactory().getCurrentSession();
+        if (!session.isOpen()){
+            session = HibernateSession.INSTANCE.getSessionFactory().openSession();
+        }
         List<Subject> subjects = new ArrayList<>();
         try {
             subjects = session.createQuery("SELECT s from Subject s").getResultList();
@@ -39,7 +42,10 @@ public class SubjectDao implements Dao<Subject> {
     }
 
     public void save(Subject subject) {
-        Session session = HibernateSession.INSTANCE.getSessionFactory().openSession();
+        Session session = HibernateSession.INSTANCE.getSessionFactory().getCurrentSession();
+        if (!session.isOpen()){
+            session = HibernateSession.INSTANCE.getSessionFactory().openSession();
+        }
         Transaction transaction = session.getTransaction();
         transaction.begin();
         try {
@@ -54,7 +60,10 @@ public class SubjectDao implements Dao<Subject> {
 
     @Override
     public Subject update(Subject existing, Subject updated) {
-        Session session = HibernateSession.INSTANCE.getSessionFactory().openSession();
+        Session session = HibernateSession.INSTANCE.getSessionFactory().getCurrentSession();
+        if (!session.isOpen()){
+            session = HibernateSession.INSTANCE.getSessionFactory().openSession();
+        }
         Transaction transaction = session.getTransaction();
         Subject subjectMerged = null;
         transaction.begin();

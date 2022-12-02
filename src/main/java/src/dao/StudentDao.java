@@ -11,7 +11,10 @@ import java.util.List;
 public class StudentDao implements Dao<Student> {
 
     public Student getById(int id) {
-        Session session = HibernateSession.INSTANCE.getSessionFactory().openSession();
+        Session session = HibernateSession.INSTANCE.getSessionFactory().getCurrentSession();
+        if (!session.isOpen()){
+            session = HibernateSession.INSTANCE.getSessionFactory().openSession();
+        }
         Student student = session.get(Student.class, id);
         session.close();
         return student;
@@ -19,7 +22,10 @@ public class StudentDao implements Dao<Student> {
 
     @Override
     public List<Student> getAll() {
-        Session session = HibernateSession.INSTANCE.getSessionFactory().openSession();
+        Session session = HibernateSession.INSTANCE.getSessionFactory().getCurrentSession();
+        if (!session.isOpen()){
+            session = HibernateSession.INSTANCE.getSessionFactory().openSession();
+        }
         List<Student> students = new ArrayList<>();
         try {
             students = session.createQuery("SELECT s from Student s").getResultList();
@@ -32,7 +38,10 @@ public class StudentDao implements Dao<Student> {
     }
 
     public void save(Student student) {
-        Session session = HibernateSession.INSTANCE.getSessionFactory().openSession();
+        Session session = HibernateSession.INSTANCE.getSessionFactory().getCurrentSession();
+        if (!session.isOpen()){
+            session = HibernateSession.INSTANCE.getSessionFactory().openSession();
+        }
         Transaction transaction = session.getTransaction();
         transaction.begin();
         try {
@@ -47,7 +56,10 @@ public class StudentDao implements Dao<Student> {
 
     @Override
     public Student update(Student existing, Student updated) {
-        Session session = HibernateSession.INSTANCE.getSessionFactory().openSession();
+        Session session = HibernateSession.INSTANCE.getSessionFactory().getCurrentSession();
+        if (!session.isOpen()){
+            session = HibernateSession.INSTANCE.getSessionFactory().openSession();
+        }
         Transaction transaction = session.getTransaction();
         Student studentMerged = null;
         transaction.begin();

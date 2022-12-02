@@ -26,7 +26,7 @@ public class FieldOfStudy implements Serializable {
 
     private String type;
 
-    @OneToMany(cascade = CascadeType.DETACH, fetch = FetchType.LAZY, mappedBy = "fieldOfStudy")
+    @OneToMany(mappedBy = "fieldOfStudy")
     private Set<Student> students = new HashSet<>(10);
 
     public FieldOfStudy(String name, String type){

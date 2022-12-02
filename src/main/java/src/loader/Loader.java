@@ -2,6 +2,9 @@ package src.loader;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+import src.HibernateSession;
 import src.dao.*;
 import src.model.*;
 
@@ -32,13 +35,13 @@ public class Loader {
     }
 
     public void load() {
-//        loadAddresses();
-//        loadFieldsOfStudies();
-//        loadPeople();
-//        loadStudents();
-//        loadSubjects();
+        loadAddresses();
+        loadFieldsOfStudies();
+        loadStudents();
+        loadSubjects();
         loadTeachers();
         loadTests();
+//        HibernateSession.truncate();
     }
 
     private List<Address> getAddresses() {
@@ -49,7 +52,7 @@ public class Loader {
         Address address5 = new Address("Poland", "Tymbark", "20-700", "Kosmiczna");
         Address address6 = new Address("Poland", "Lublin", "20-770", "3 Maja");
         Address address7 = new Address("Poland", "Szczecin", "20-930", "1 Maja");
-        Address address8 = new Address("Poland", "Częstochowa", "10-930", "Wolności");
+        Address address8 = new Address("Poland", "Czestochowa", "10-930", "Wolnosci");
 
         return Stream.of(address1, address2, address3, address4, address5, address6,
                 address7, address8).collect(Collectors.toList());
@@ -79,34 +82,27 @@ public class Loader {
         fieldOfStudies.forEach(entry -> fieldOfStudyDao.save(entry));
     }
 
-    private void loadPeople() {
-        Person person1 = new Person("Michał", "Góral", "mgoral@wp.pl");
+    private void loadStudents() {
+        Session session = HibernateSession.INSTANCE.getSessionFactory().getCurrentSession();
+        if (!session.isOpen()){
+            session = HibernateSession.INSTANCE.getSessionFactory().openSession();
+        }
+        Transaction transaction = session.getTransaction();
+        transaction.begin();
+
+        Person person1 = new Person("Michal", "Goral", "mgoral@wp.pl");
         Person person2 = new Person("Wojciech", "Kowalski", "wkowalski@wp.pl");
         Person person3 = new Person("Kamil", "Nowak", "knowak@wp.pl");
         Person person4 = new Person("Karol", "Wojciechowski", "kwojciechowski@wp.pl");
-        Person person5 = new Person("Adam", "Czyż", "aczyz@wp.pl");
-        Person person6 = new Person("Marcin", "Żurowiec", "mzurowiec@wp.pl");
-        Person person7 = new Person("Maciej", "Pradelski", "mpradelski@wp.pl");
-        Person person8 = new Person("Dawid", "Kowalczyk", "skowalczyk@wp.pl");
 
-        Stream.of(person1, person2, person3, person4, person5, person6, person7, person8)
-                .collect(Collectors.toList())
-                .forEach(entry -> personDao.save(entry));
-    }
+        Student student1 = new Student(session.load(Address.class, 1),person1, 282642, 2, session.load(FieldOfStudy.class, 1));
+        Student student2 = new Student(session.load(Address.class, 2), person2, 282642, 1, session.load(FieldOfStudy.class, 2));
+        Student student3 = new Student(session.load(Address.class, 1), person3,282542, 3, session.load(FieldOfStudy.class, 2));
+        Student student4 = new Student(session.load(Address.class, 4), person4,282632, 5, session.load(FieldOfStudy.class, 3));
+        transaction.commit();
+        session.close();
 
-    private void loadStudents() {
-        List<Address> addresses = getAddresses();
-        List<FieldOfStudy> fieldOfStudies = getFieldOfStudies();
-        Student student1 = new Student(addresses.get(5), 282642, 2, fieldOfStudies.get(0));
-        Student student2 = new Student(addresses.get(2), 282642, 1, fieldOfStudies.get(1));
-        Student student3 = new Student(addresses.get(1), 282542, 3, fieldOfStudies.get(2));
-        Student student4 = new Student(addresses.get(4), 282632, 5, fieldOfStudies.get(3));
-        Student student5 = new Student(addresses.get(3), 281642, 6, fieldOfStudies.get(4));
-        Student student6 = new Student(addresses.get(7), 262642, 1, fieldOfStudies.get(5));
-        Student student7 = new Student(addresses.get(0), 482642, 7, fieldOfStudies.get(6));
-        Student student8 = new Student(addresses.get(6), 288682, 1, fieldOfStudies.get(7));
-
-        Stream.of(student1, student2, student3, student4, student5, student6, student7, student8)
+        Stream.of(student1, student2, student3, student4)
                 .collect(Collectors.toList())
                 .forEach(entry -> personDao.save(entry));
     }
@@ -128,30 +124,51 @@ public class Loader {
     }
 
     private void loadTeachers() {
-        List<Address> addresses = getAddresses();
-        Teacher teacher1 = new Teacher(addresses.get(0), "Magister");
-        Teacher teacher2 = new Teacher(addresses.get(1), "Doktor");
-        Teacher teacher3 = new Teacher(addresses.get(2), "Doktor Habilitowany");
-        Teacher teacher4 = new Teacher(addresses.get(3), "Profesor Zwyczajny");
-        Teacher teacher5 = new Teacher(addresses.get(4), "Profesor Nadwyczajny");
-        Teacher teacher6 = new Teacher(addresses.get(5), "Magister inżynier");
-        Teacher teacher7 = new Teacher(addresses.get(6), "Doktor");
-        Teacher teacher8 = new Teacher(addresses.get(7), "Profesor Zwyczajny");
+        Session session = HibernateSession.INSTANCE.getSessionFactory().getCurrentSession();
+        if (!session.isOpen()){
+            session = HibernateSession.INSTANCE.getSessionFactory().openSession();
+        }
+        Transaction transaction = session.getTransaction();
+        transaction.begin();
 
-        Stream.of(teacher1, teacher2, teacher3, teacher4, teacher5, teacher6, teacher7, teacher8)
+        Person person5 = new Person("Adam", "Czyz", "aczyz@wp.pl");
+        Person person6 = new Person("Marcin", "Zurowiec", "mzurowiec@wp.pl");
+        Person person7 = new Person("Maciej", "Pradelski", "mpradelski@wp.pl");
+        Person person8 = new Person("Dawid", "Kowalczyk", "skowalczyk@wp.pl");
+
+
+        Teacher teacher1 = new Teacher(session.load(Address.class, 5), person5,"Magister");
+        Teacher teacher2 = new Teacher(session.load(Address.class, 6), person6,"Doktor");
+        Teacher teacher3 = new Teacher(session.load(Address.class, 7), person7,"Doktor Habilitowany");
+        Teacher teacher4 = new Teacher(session.load(Address.class, 8), person8,"Profesor Zwyczajny");
+
+        transaction.commit();
+        session.close();
+
+        Stream.of(teacher1, teacher2, teacher3, teacher4)
                 .collect(Collectors.toList())
                 .forEach(entry -> teacherDao.save(entry));
     }
 
     private void loadTests() {
-        Test test1 = new Test(new Date(1669907466884L), 5);
-        Test test2 = new Test(new Date(1669907466884L), 2);
-        Test test3 = new Test(new Date(1669907465884L), 3);
-        Test test4 = new Test(new Date(1669907436884L), 4);
-        Test test5 = new Test(new Date(1669907466884L), 4);
-        Test test6 = new Test(new Date(1669905466884L), 5);
-        Test test7 = new Test(new Date(1669906466884L), 5);
-        Test test8 = new Test(new Date(1669902466884L), 2);
+        Session session = HibernateSession.INSTANCE.getSessionFactory().getCurrentSession();
+        if (!session.isOpen()){
+            session = HibernateSession.INSTANCE.getSessionFactory().openSession();
+        }
+        Transaction transaction = session.getTransaction();
+        transaction.begin();
+
+        Test test1 = new Test(new Date(1669907466884L), 5,session.load(Subject.class, 1), session.load(Student.class, 1));
+        Test test2 = new Test(new Date(1669907466884L), 2,session.load(Subject.class, 2), session.load(Student.class, 1));
+        Test test3 = new Test(new Date(1669907465884L), 3,session.load(Subject.class, 3), session.load(Student.class, 2));
+        Test test4 = new Test(new Date(1669907436884L), 4,session.load(Subject.class, 4), session.load(Student.class, 3));
+        Test test5 = new Test(new Date(1669907466884L), 4,session.load(Subject.class, 5), session.load(Student.class, 4));
+        Test test6 = new Test(new Date(1669905466884L), 5,session.load(Subject.class, 6), session.load(Student.class, 4));
+        Test test7 = new Test(new Date(1669906466884L), 5,session.load(Subject.class, 7), session.load(Student.class, 4));
+        Test test8 = new Test(new Date(1669902466884L), 2,session.load(Subject.class, 8), session.load(Student.class, 2));
+
+        transaction.commit();
+        session.close();
 
         Stream.of(test1, test2, test3, test4, test5, test6, test7, test8)
                 .collect(Collectors.toList())

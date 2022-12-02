@@ -11,7 +11,10 @@ import java.util.List;
 
 public class FieldOfStudyDao implements Dao<FieldOfStudy> {
     public FieldOfStudy getById(int id) {
-        Session session = HibernateSession.INSTANCE.getSessionFactory().openSession();
+        Session session = HibernateSession.INSTANCE.getSessionFactory().getCurrentSession();
+        if (!session.isOpen()){
+            session = HibernateSession.INSTANCE.getSessionFactory().openSession();
+        }
         FieldOfStudy fieldOfStudy = session.get(FieldOfStudy.class, id);
         session.close();
         return fieldOfStudy;
@@ -19,7 +22,10 @@ public class FieldOfStudyDao implements Dao<FieldOfStudy> {
 
     @Override
     public List<FieldOfStudy> getAll() {
-        Session session = HibernateSession.INSTANCE.getSessionFactory().openSession();
+        Session session = HibernateSession.INSTANCE.getSessionFactory().getCurrentSession();
+        if (!session.isOpen()){
+            session = HibernateSession.INSTANCE.getSessionFactory().openSession();
+        }
         List<FieldOfStudy> fieldOfStudies = new ArrayList<>();
         try {
             fieldOfStudies = session.createQuery("SELECT f from FieldOfStudy f").getResultList();
@@ -32,7 +38,10 @@ public class FieldOfStudyDao implements Dao<FieldOfStudy> {
     }
 
     public void save(FieldOfStudy fieldOfStudy) {
-        Session session = HibernateSession.INSTANCE.getSessionFactory().openSession();
+        Session session = HibernateSession.INSTANCE.getSessionFactory().getCurrentSession();
+        if (!session.isOpen()){
+            session = HibernateSession.INSTANCE.getSessionFactory().openSession();
+        }
         Transaction transaction = session.getTransaction();
         transaction.begin();
         try {
@@ -47,7 +56,10 @@ public class FieldOfStudyDao implements Dao<FieldOfStudy> {
 
     @Override
     public FieldOfStudy update(FieldOfStudy existing, FieldOfStudy updated) {
-        Session session = HibernateSession.INSTANCE.getSessionFactory().openSession();
+        Session session = HibernateSession.INSTANCE.getSessionFactory().getCurrentSession();
+        if (!session.isOpen()){
+            session = HibernateSession.INSTANCE.getSessionFactory().openSession();
+        }
         Transaction transaction = session.getTransaction();
         FieldOfStudy fieldOfStudyMerged = null;
         transaction.begin();

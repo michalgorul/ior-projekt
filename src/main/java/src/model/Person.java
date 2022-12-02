@@ -5,7 +5,7 @@ import lombok.*;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "persons")
+@Table(name = "people")
 @Inheritance(strategy = InheritanceType.JOINED)
 @NoArgsConstructor
 @AllArgsConstructor
@@ -19,10 +19,10 @@ public class Person {
     @Column(name = "person_id")
     private int id;
     @Column(name = "f_name")
-    private String fName;
+    protected String fName;
     @Column(name = "s_name")
-    private String sName;
-    private String email;
+    protected String sName;
+    protected String email;
 
     public Person(String fName, String sName, String email){
         this.fName = fName;

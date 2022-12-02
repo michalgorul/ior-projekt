@@ -17,7 +17,7 @@ import java.util.Set;
 @Setter
 public class Student extends Person implements Serializable {
 
-    @ManyToOne(cascade = CascadeType.DETACH)
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "address_id", foreignKey = @ForeignKey(name = "fk_student_address"))
     private Address address;
 
@@ -26,15 +26,10 @@ public class Student extends Person implements Serializable {
 
     private int semester;
 
-    @ManyToOne(
-            cascade = {CascadeType.MERGE, CascadeType.PERSIST},
-            fetch = FetchType.LAZY
-    )
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(
             name = "field_of_study_id",
-            foreignKey = @ForeignKey(name = "fk_field_student"),
-            insertable = false,
-            updatable = false)
+            foreignKey = @ForeignKey(name = "fk_student_field"))
     private FieldOfStudy fieldOfStudy;
 
     @ManyToMany(cascade = CascadeType.PERSIST)
@@ -45,10 +40,13 @@ public class Student extends Person implements Serializable {
             foreignKey = @ForeignKey(name = "fk_students_subjects"))
     private Set<Subject> subjects = new HashSet<>();
 
-    @OneToMany(cascade = CascadeType.DETACH, fetch = FetchType.LAZY, mappedBy = "student")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "student")
     private Set<Test> tests = new HashSet<>(10);
 
-    public Student(Address address, int indexNo, int semester, FieldOfStudy fieldOfStudy) {
+    public Student(Address address, Person person, int indexNo, int semester, FieldOfStudy fieldOfStudy) {
+        this.fName = person.getFName();
+        this.sName = person.getSName();
+        this.email = person.getEmail();
         this.address = address;
         this.indexNo = indexNo;
         this.semester = semester;

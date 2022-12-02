@@ -10,7 +10,10 @@ import java.util.List;
 
 public class PersonDao  implements Dao<Person> {
     public Person getById(int id) {
-        Session session = HibernateSession.INSTANCE.getSessionFactory().openSession();
+        Session session = HibernateSession.INSTANCE.getSessionFactory().getCurrentSession();
+        if (!session.isOpen()){
+            session = HibernateSession.INSTANCE.getSessionFactory().openSession();
+        }
         Person person = session.get(Person.class, id);
         session.close();
         return person;
@@ -18,7 +21,10 @@ public class PersonDao  implements Dao<Person> {
 
     @Override
     public List<Person> getAll() {
-        Session session = HibernateSession.INSTANCE.getSessionFactory().openSession();
+        Session session = HibernateSession.INSTANCE.getSessionFactory().getCurrentSession();
+        if (!session.isOpen()){
+            session = HibernateSession.INSTANCE.getSessionFactory().openSession();
+        }
         List<Person> people = new ArrayList<>();
         try {
             people = session.createQuery("SELECT p from Person p").getResultList();
@@ -30,13 +36,15 @@ public class PersonDao  implements Dao<Person> {
         return people;
     }
 
-//    TODO try to load field of study from hibernate
     public void save(Person person) {
-        Session session = HibernateSession.INSTANCE.getSessionFactory().openSession();
+        Session session = HibernateSession.INSTANCE.getSessionFactory().getCurrentSession();
+        if (!session.isOpen()){
+            session = HibernateSession.INSTANCE.getSessionFactory().openSession();
+        }
         Transaction transaction = session.getTransaction();
         transaction.begin();
         try {
-            session.persist(person);
+            session.save(person);
             transaction.commit();
         } catch (Exception exception) {
             transaction.rollback();
@@ -47,7 +55,10 @@ public class PersonDao  implements Dao<Person> {
 
     @Override
     public Person update(Person existing, Person updated) {
-        Session session = HibernateSession.INSTANCE.getSessionFactory().openSession();
+        Session session = HibernateSession.INSTANCE.getSessionFactory().getCurrentSession();
+        if (!session.isOpen()){
+            session = HibernateSession.INSTANCE.getSessionFactory().openSession();
+        }
         Transaction transaction = session.getTransaction();
         Person personMerged = null;
         transaction.begin();

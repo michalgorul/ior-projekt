@@ -11,7 +11,10 @@ import java.util.List;
 public class AddressDao implements Dao<Address> {
 
     public Address getById(int id) {
-        Session session = HibernateSession.INSTANCE.getSessionFactory().openSession();
+        Session session = HibernateSession.INSTANCE.getSessionFactory().getCurrentSession();
+        if (!session.isOpen()){
+            session = HibernateSession.INSTANCE.getSessionFactory().openSession();
+        }
         Address address = session.get(Address.class, id);
         session.close();
         return address;
@@ -19,7 +22,10 @@ public class AddressDao implements Dao<Address> {
 
     @Override
     public List<Address> getAll() {
-        Session session = HibernateSession.INSTANCE.getSessionFactory().openSession();
+        Session session = HibernateSession.INSTANCE.getSessionFactory().getCurrentSession();
+        if (!session.isOpen()){
+            session = HibernateSession.INSTANCE.getSessionFactory().openSession();
+        }
         List<Address> addresses = new ArrayList<>();
         try {
             addresses = session.createQuery("SELECT a from Address a").getResultList();
@@ -32,7 +38,10 @@ public class AddressDao implements Dao<Address> {
     }
 
     public void save(Address address) {
-        Session session = HibernateSession.INSTANCE.getSessionFactory().openSession();
+        Session session = HibernateSession.INSTANCE.getSessionFactory().getCurrentSession();
+        if (!session.isOpen()){
+            session = HibernateSession.INSTANCE.getSessionFactory().openSession();
+        }
         Transaction transaction = session.getTransaction();
         transaction.begin();
         try {
@@ -47,7 +56,10 @@ public class AddressDao implements Dao<Address> {
 
     @Override
     public Address update(Address existing, Address updated) {
-        Session session = HibernateSession.INSTANCE.getSessionFactory().openSession();
+        Session session = HibernateSession.INSTANCE.getSessionFactory().getCurrentSession();
+        if (!session.isOpen()){
+            session = HibernateSession.INSTANCE.getSessionFactory().openSession();
+        }
         Transaction transaction = session.getTransaction();
         Address mergedAddress = null;
         transaction.begin();

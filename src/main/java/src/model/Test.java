@@ -43,8 +43,10 @@ public class Test {
             updatable = false)
     private Student student;
 
-    public Test(Date date, int grade){
+    public Test(Date date, int grade, Subject subject, Student student){
         this.date = date;
         this.grade = grade;
+        this.student = student;
+        this.subject = subject;
     }
 }

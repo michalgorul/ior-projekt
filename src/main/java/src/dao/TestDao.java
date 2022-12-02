@@ -12,14 +12,20 @@ public class TestDao implements Dao<Test> {
 
     @Override
     public Test getById(int id) {
-        Session session = HibernateSession.INSTANCE.getSessionFactory().openSession();
+        Session session = HibernateSession.INSTANCE.getSessionFactory().getCurrentSession();
+        if (!session.isOpen()){
+            session = HibernateSession.INSTANCE.getSessionFactory().openSession();
+        }
         Test test = session.get(Test.class, id);
         session.close();
         return test;
     }
 
     public void save(Test test) {
-        Session session = HibernateSession.INSTANCE.getSessionFactory().openSession();
+        Session session = HibernateSession.INSTANCE.getSessionFactory().getCurrentSession();
+        if (!session.isOpen()){
+            session = HibernateSession.INSTANCE.getSessionFactory().openSession();
+        }
         Transaction transaction = session.getTransaction();
         transaction.begin();
         try {
@@ -34,7 +40,10 @@ public class TestDao implements Dao<Test> {
 
     @Override
     public List<Test> getAll() {
-        Session session = HibernateSession.INSTANCE.getSessionFactory().openSession();
+        Session session = HibernateSession.INSTANCE.getSessionFactory().getCurrentSession();
+        if (!session.isOpen()){
+            session = HibernateSession.INSTANCE.getSessionFactory().openSession();
+        }
         List<Test> tests = new ArrayList<>();
         try {
             tests = session.createQuery("SELECT t from Test t").getResultList();
@@ -48,7 +57,10 @@ public class TestDao implements Dao<Test> {
 
     @Override
     public Test update(Test existing, Test updated) {
-        Session session = HibernateSession.INSTANCE.getSessionFactory().openSession();
+        Session session = HibernateSession.INSTANCE.getSessionFactory().getCurrentSession();
+        if (!session.isOpen()){
+            session = HibernateSession.INSTANCE.getSessionFactory().openSession();
+        }
         Transaction transaction = session.getTransaction();
         Test testMerged = null;
         transaction.begin();
