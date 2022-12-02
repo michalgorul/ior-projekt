@@ -27,13 +27,13 @@ public enum HibernateSession {
         Transaction transaction = session.getTransaction();
         transaction.begin();
         try {
-            session.createQuery("DELETE from Address").executeUpdate();
-            session.createQuery("DELETE from FieldOfStudy").executeUpdate();
-            session.createQuery("DELETE from Person").executeUpdate();
-            session.createQuery("DELETE from Student").executeUpdate();
-            session.createQuery("DELETE from Subject").executeUpdate();
-            session.createQuery("DELETE from Teacher").executeUpdate();
-            session.createQuery("DELETE from Test").executeUpdate();
+            session.createQuery("DELETE from AddressDto").executeUpdate();
+            session.createQuery("DELETE from FieldOfStudyDto").executeUpdate();
+            session.createQuery("DELETE from PersonDto").executeUpdate();
+            session.createQuery("DELETE from StudentDto").executeUpdate();
+            session.createQuery("DELETE from SubjectDto").executeUpdate();
+            session.createQuery("DELETE from TeacherDto").executeUpdate();
+            session.createQuery("DELETE from TestDto").executeUpdate();
             transaction.commit();
         }
         catch (Exception exception) {

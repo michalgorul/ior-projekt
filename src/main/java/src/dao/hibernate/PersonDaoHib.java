@@ -30,7 +30,7 @@ public class PersonDaoHib implements Dao<Person> {
         Person person = null;
         try {
             person = (Person) session.createQuery("SELECT p.id, p.sName, p.fName, p.email " +
-                            "FROM Person p " +
+                            "FROM PersonDto p " +
                             "WHERE p.sName = :sname")
                     .setParameter("sname", surname)
                     .getSingleResult();
@@ -52,7 +52,7 @@ public class PersonDaoHib implements Dao<Person> {
         }
         List<Person> people = new ArrayList<>();
         try {
-            people = session.createQuery("SELECT p from Person p").getResultList();
+            people = session.createQuery("SELECT p from PersonDto p").getResultList();
         } catch (Exception ex) {
             ex.printStackTrace();
         }

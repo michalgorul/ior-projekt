@@ -47,7 +47,7 @@ public class TestDaoHib implements Dao<Test> {
         }
         List<Test> tests = new ArrayList<>();
         try {
-            tests = session.createQuery("SELECT t from Test t").getResultList();
+            tests = session.createQuery("SELECT t from TestDto t").getResultList();
         } catch (Exception ex) {
             ex.printStackTrace();
         }

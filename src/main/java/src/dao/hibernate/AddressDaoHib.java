@@ -4,6 +4,7 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import src.HibernateSession;
 import src.dao.Dao;
+import src.dto.AddressDto;
 import src.model.Address;
 
 import java.util.ArrayList;
@@ -12,11 +13,26 @@ import java.util.List;
 public class AddressDaoHib implements Dao<Address> {
 
     public Address getById(int id) {
-        Session session = HibernateSession.INSTANCE.getSessionFactory().getCurrentSession();
-        if (!session.isOpen()) {
-            session = HibernateSession.INSTANCE.getSessionFactory().openSession();
-        }
+        Session session = HibernateSession.INSTANCE.getSessionFactory().openSession();
         Address address = session.get(Address.class, id);
+        session.close();
+        return address;
+    }
+
+    public AddressDto getByIdJpql(int id) {
+        Session session = HibernateSession.INSTANCE.getSessionFactory().openSession();
+        AddressDto address = null;
+        try {
+            address = session.createQuery("SELECT " +
+                            "new src.dto.AddressDto(a.id, a.country, a.city, a.postalCode, a.street) " +
+                            "from Address a " +
+                            "WHERE a.id = :id", AddressDto.class)
+                    .setParameter("id", id)
+                    .getSingleResult();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
         session.close();
         return address;
     }
@@ -29,7 +45,7 @@ public class AddressDaoHib implements Dao<Address> {
         }
         List<Address> addresses = new ArrayList<>();
         try {
-            addresses = session.createQuery("SELECT a from Address a").getResultList();
+            addresses = session.createQuery("SELECT a from AddressDto a").getResultList();
         } catch (Exception ex) {
             ex.printStackTrace();
         }

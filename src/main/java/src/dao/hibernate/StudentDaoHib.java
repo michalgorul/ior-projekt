@@ -56,7 +56,7 @@ public class StudentDaoHib implements Dao<Student> {
         }
         List<Student> students = new ArrayList<>();
         try {
-            students = session.createQuery("SELECT s from Student s").getResultList();
+            students = session.createQuery("SELECT s from StudentDto s").getResultList();
         } catch (Exception ex) {
             ex.printStackTrace();
         }
