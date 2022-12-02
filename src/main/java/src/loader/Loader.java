@@ -35,10 +35,12 @@ public class Loader {
     }
 
     public void load() {
+
         loadAddresses();
         loadFieldsOfStudies();
-        loadStudents();
         loadSubjects();
+
+        loadStudents();
         loadTeachers();
         loadTests();
 //        HibernateSession.truncate();
@@ -99,6 +101,16 @@ public class Loader {
         Student student2 = new Student(session.load(Address.class, 2), person2, 282642, 1, session.load(FieldOfStudy.class, 2));
         Student student3 = new Student(session.load(Address.class, 1), person3,282542, 3, session.load(FieldOfStudy.class, 2));
         Student student4 = new Student(session.load(Address.class, 4), person4,282632, 5, session.load(FieldOfStudy.class, 3));
+
+        student1.addSubject(session.load(Subject.class, 1));
+        student1.addSubject(session.load(Subject.class, 2));
+        student2.addSubject(session.load(Subject.class, 3));
+        student2.addSubject(session.load(Subject.class, 4));
+        student3.addSubject(session.load(Subject.class, 5));
+        student3.addSubject(session.load(Subject.class, 6));
+        student4.addSubject(session.load(Subject.class, 7));
+        student4.addSubject(session.load(Subject.class, 8));
+
         transaction.commit();
         session.close();
 

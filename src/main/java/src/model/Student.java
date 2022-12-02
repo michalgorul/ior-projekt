@@ -58,8 +58,4 @@ public class Student extends Person implements Serializable {
         subject.getStudents().add(this);
     }
 
-    public void addTest(Test test) {
-        this.tests.add(test);
-        test.setStudent(this);
-    }
 }
