@@ -1,18 +1,18 @@
-package src.dao;
+package src.dao.hibernate;
 
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import src.HibernateSession;
-import src.model.Address;
+import src.dao.Dao;
 import src.model.FieldOfStudy;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class FieldOfStudyDao implements Dao<FieldOfStudy> {
+public class FieldOfStudyDaoHib implements Dao<FieldOfStudy> {
     public FieldOfStudy getById(int id) {
         Session session = HibernateSession.INSTANCE.getSessionFactory().getCurrentSession();
-        if (!session.isOpen()){
+        if (!session.isOpen()) {
             session = HibernateSession.INSTANCE.getSessionFactory().openSession();
         }
         FieldOfStudy fieldOfStudy = session.get(FieldOfStudy.class, id);
@@ -23,7 +23,7 @@ public class FieldOfStudyDao implements Dao<FieldOfStudy> {
     @Override
     public List<FieldOfStudy> getAll() {
         Session session = HibernateSession.INSTANCE.getSessionFactory().getCurrentSession();
-        if (!session.isOpen()){
+        if (!session.isOpen()) {
             session = HibernateSession.INSTANCE.getSessionFactory().openSession();
         }
         List<FieldOfStudy> fieldOfStudies = new ArrayList<>();
@@ -39,7 +39,7 @@ public class FieldOfStudyDao implements Dao<FieldOfStudy> {
 
     public void save(FieldOfStudy fieldOfStudy) {
         Session session = HibernateSession.INSTANCE.getSessionFactory().getCurrentSession();
-        if (!session.isOpen()){
+        if (!session.isOpen()) {
             session = HibernateSession.INSTANCE.getSessionFactory().openSession();
         }
         Transaction transaction = session.getTransaction();
@@ -57,7 +57,7 @@ public class FieldOfStudyDao implements Dao<FieldOfStudy> {
     @Override
     public FieldOfStudy update(FieldOfStudy existing, FieldOfStudy updated) {
         Session session = HibernateSession.INSTANCE.getSessionFactory().getCurrentSession();
-        if (!session.isOpen()){
+        if (!session.isOpen()) {
             session = HibernateSession.INSTANCE.getSessionFactory().openSession();
         }
         Transaction transaction = session.getTransaction();

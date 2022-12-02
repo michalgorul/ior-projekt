@@ -1,19 +1,20 @@
-package src.dao;
+package src.dao.hibernate;
 
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import src.HibernateSession;
+import src.dao.Dao;
 import src.model.Test;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class TestDao implements Dao<Test> {
+public class TestDaoHib implements Dao<Test> {
 
     @Override
     public Test getById(int id) {
         Session session = HibernateSession.INSTANCE.getSessionFactory().getCurrentSession();
-        if (!session.isOpen()){
+        if (!session.isOpen()) {
             session = HibernateSession.INSTANCE.getSessionFactory().openSession();
         }
         Test test = session.get(Test.class, id);
@@ -23,7 +24,7 @@ public class TestDao implements Dao<Test> {
 
     public void save(Test test) {
         Session session = HibernateSession.INSTANCE.getSessionFactory().getCurrentSession();
-        if (!session.isOpen()){
+        if (!session.isOpen()) {
             session = HibernateSession.INSTANCE.getSessionFactory().openSession();
         }
         Transaction transaction = session.getTransaction();
@@ -41,7 +42,7 @@ public class TestDao implements Dao<Test> {
     @Override
     public List<Test> getAll() {
         Session session = HibernateSession.INSTANCE.getSessionFactory().getCurrentSession();
-        if (!session.isOpen()){
+        if (!session.isOpen()) {
             session = HibernateSession.INSTANCE.getSessionFactory().openSession();
         }
         List<Test> tests = new ArrayList<>();
@@ -58,7 +59,7 @@ public class TestDao implements Dao<Test> {
     @Override
     public Test update(Test existing, Test updated) {
         Session session = HibernateSession.INSTANCE.getSessionFactory().getCurrentSession();
-        if (!session.isOpen()){
+        if (!session.isOpen()) {
             session = HibernateSession.INSTANCE.getSessionFactory().openSession();
         }
         Transaction transaction = session.getTransaction();

@@ -1,51 +1,52 @@
-package src.dao;
+package src.dao.hibernate;
 
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import src.HibernateSession;
-import src.model.Address;
+import src.dao.Dao;
+import src.model.Teacher;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class AddressDao implements Dao<Address> {
+public class TeacherDaoHib implements Dao<Teacher> {
 
-    public Address getById(int id) {
+    public Teacher getById(int id) {
         Session session = HibernateSession.INSTANCE.getSessionFactory().getCurrentSession();
-        if (!session.isOpen()){
+        if (!session.isOpen()) {
             session = HibernateSession.INSTANCE.getSessionFactory().openSession();
         }
-        Address address = session.get(Address.class, id);
+        Teacher teacher = session.get(Teacher.class, id);
         session.close();
-        return address;
+        return teacher;
     }
 
     @Override
-    public List<Address> getAll() {
+    public List<Teacher> getAll() {
         Session session = HibernateSession.INSTANCE.getSessionFactory().getCurrentSession();
-        if (!session.isOpen()){
+        if (!session.isOpen()) {
             session = HibernateSession.INSTANCE.getSessionFactory().openSession();
         }
-        List<Address> addresses = new ArrayList<>();
+        List<Teacher> teachers = new ArrayList<>();
         try {
-            addresses = session.createQuery("SELECT a from Address a").getResultList();
+            teachers = session.createQuery("SELECT t from Teacher t").getResultList();
         } catch (Exception ex) {
             ex.printStackTrace();
         }
 
         session.close();
-        return addresses;
+        return teachers;
     }
 
-    public void save(Address address) {
+    public void save(Teacher teacher) {
         Session session = HibernateSession.INSTANCE.getSessionFactory().getCurrentSession();
-        if (!session.isOpen()){
+        if (!session.isOpen()) {
             session = HibernateSession.INSTANCE.getSessionFactory().openSession();
         }
         Transaction transaction = session.getTransaction();
         transaction.begin();
         try {
-            session.persist(address);
+            session.persist(teacher);
             transaction.commit();
         } catch (Exception exception) {
             transaction.rollback();
@@ -55,27 +56,28 @@ public class AddressDao implements Dao<Address> {
     }
 
     @Override
-    public Address update(Address existing, Address updated) {
+    public Teacher update(Teacher existing, Teacher updated) {
         Session session = HibernateSession.INSTANCE.getSessionFactory().getCurrentSession();
-        if (!session.isOpen()){
+        if (!session.isOpen()) {
             session = HibernateSession.INSTANCE.getSessionFactory().openSession();
         }
         Transaction transaction = session.getTransaction();
-        Address mergedAddress = null;
+        Teacher teacherMerged = null;
         transaction.begin();
         try {
             session.evict(existing);
-            existing.setCountry(updated.getCountry());
-            existing.setCity(updated.getCity());
-            existing.setPostalCode(updated.getPostalCode());
-            existing.setStreet(updated.getStreet());
-            mergedAddress = (Address) session.merge(existing);
+            existing.setFName(updated.getFName());
+            existing.setSName(updated.getSName());
+            existing.setEmail(updated.getEmail());
+            existing.setTitle(updated.getTitle());
+            existing.setAddress(updated.getAddress());
+            teacherMerged = (Teacher) session.merge(existing);
             transaction.commit();
         } catch (Exception exception) {
             transaction.rollback();
             exception.printStackTrace();
         }
         session.close();
-        return mergedAddress;
+        return teacherMerged;
     }
 }

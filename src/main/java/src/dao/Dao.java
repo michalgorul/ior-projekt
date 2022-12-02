@@ -1,7 +1,5 @@
 package src.dao;
 
-import src.model.Address;
-
 import java.util.List;
 
 public interface Dao<T> {
