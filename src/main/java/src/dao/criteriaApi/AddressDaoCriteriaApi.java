@@ -15,16 +15,21 @@ public class AddressDaoCriteriaApi {
         Session session = HibernateSession.INSTANCE.getSessionFactory().openSession();
         // Create query
         CriteriaBuilder cb = session.getCriteriaBuilder();
-        CriteriaQuery<AddressDto> cq = cb.createQuery(AddressDto.class);
+        CriteriaQuery<AddressDto> query = cb.createQuery(AddressDto.class);
         // Define FROM clause
-        Root<Address> root = cq.from(Address.class);
+        Root<Address> root = query.from(Address.class);
         // Define WHERE clause
-//        cq.where(cb.equal(root.get(Book_.id), paramTitle));
-//        // Define AddressDto projection
-//        cq.select(cb.construct(AddressDto.class, Address_.id));
+        query.where(cb.equal(root.get("id"), id));
+        // Define AddressDto projection
+        query.select(cb.construct(AddressDto.class,
+                root.get("id"),
+                root.get("country"),
+                root.get("city"),
+                root.get("postalCode"),
+                root.get("street")));
 
         // Execute query
-        return null;
+        return session.createQuery(query).getSingleResult();
     }
 
 }
