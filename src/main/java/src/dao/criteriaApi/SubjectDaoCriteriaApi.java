@@ -20,7 +20,7 @@ public class SubjectDaoCriteriaApi {
         Root<Subject> root = query.from(Subject.class);
         // Define WHERE clause
         query.where(cb.equal(root.get("name"), name));
-        // Define AddressDto projection
+        // Define SubjectDto projection
         query.select(cb.construct(SubjectDto.class,
                 root.get("id"),
                 root.get("name")));

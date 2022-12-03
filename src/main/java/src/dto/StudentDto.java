@@ -1,11 +1,11 @@
 package src.dto;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-import javax.persistence.*;
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -24,13 +24,11 @@ public class StudentDto extends PersonDto implements Serializable {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("Student(");
-        sb.append("fName='").append(fName).append('\'');
-        sb.append(", sName='").append(sName).append('\'');
-        sb.append(", email='").append(email).append('\'');
-        sb.append(", indexNo=").append(indexNo);
-        sb.append(", semester=").append(semester);
-        sb.append(')');
-        return sb.toString();
+        return "Student(" + "fName='" + fName + '\'' +
+                ", sName='" + sName + '\'' +
+                ", email='" + email + '\'' +
+                ", indexNo=" + indexNo +
+                ", semester=" + semester +
+                ')';
     }
 }

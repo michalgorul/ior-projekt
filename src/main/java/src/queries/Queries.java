@@ -52,6 +52,7 @@ public class Queries {
         getTestGradeAvg();
         getStudentTestGradeAvgHavingGe();
     }
+
     private void getAddressById() {
         AddressDto byIdJpql = addressDaoHib.getByIdHib(1);
         System.out.println("\nAddress by ID=1 with JPQL:");
@@ -78,7 +79,7 @@ public class Queries {
     private void getSubjectByName() {
         SubjectDto byNameHib = subjectDaoHib.getByNameHib("Filozofia");
         System.out.println("\nSubject by name=Filozofia with JPQL:");
-        System.out.println("\t" + byNameHib.toString()+"\n\n=====\n");
+        System.out.println("\t" + byNameHib.toString() + "\n\n=====\n");
 
         SubjectDto byNameCriteria = subjectDaoCriteriaApi.getByNameCriteria("Filozofia");
         System.out.println("\nSubject by name=Filozofia with Criteria Api:");
@@ -114,12 +115,12 @@ public class Queries {
         System.out.println("\n\n==============================================\n\n");
     }
 
-    private void getTestGradeAvg(){
+    private void getTestGradeAvg() {
         Double avgByStudentIdHib = testDaoHib.getGradeAvgByStudentIdHib(1);
         StudentDto byIdHib = studentDaoHib.getByIdHib(1);
         System.out.println("\nStudent's average grade by student ID=1 with JPQL:");
         System.out.println(byIdHib);
-        System.out.println("\t- " + avgByStudentIdHib.toString()+"\n\n=====\n");
+        System.out.println("\t- " + avgByStudentIdHib.toString() + "\n\n=====\n");
 
         Double avgByStudentIdCriteria = testDaoCriteriaApi.getGradeAvgByStudentIdCriteria(1);
         StudentDto byIdCriteria = studentDaoCriteriaApi.getById(1);
@@ -129,7 +130,7 @@ public class Queries {
         System.out.println("\n\n==============================================\n\n");
     }
 
-    private void getStudentTestGradeAvgHavingGe(){
+    private void getStudentTestGradeAvgHavingGe() {
         List<Tuple> gradeAvgHavingHib = testDaoHib.getGradeAvgHavingHib();
         System.out.println("\nStudent's average grade by student ID=1 Having more than 1 test with JPQL:");
         gradeAvgHavingHib.forEach(TestDto::printTestTupleWithAvg);

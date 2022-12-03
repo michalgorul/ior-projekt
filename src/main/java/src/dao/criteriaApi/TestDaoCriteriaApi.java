@@ -71,7 +71,7 @@ public class TestDaoCriteriaApi {
         Join<Test, Student> student = root.join("student");
         // Define Tuple projection
         query.multiselect(student.get("indexNo"), student.get("fName"), student.get("sName"), cb.avg(root.get("grade")))
-                .groupBy(student.get("indexNo"), student.get("fName"), student.get("sName") )
+                .groupBy(student.get("indexNo"), student.get("fName"), student.get("sName"))
                 .having(cb.greaterThanOrEqualTo(cb.count(root.get("grade")), 2L));
 
         // Execute query

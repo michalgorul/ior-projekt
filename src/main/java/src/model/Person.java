@@ -24,7 +24,7 @@ public class Person {
     protected String sName;
     protected String email;
 
-    public Person(String fName, String sName, String email){
+    public Person(String fName, String sName, String email) {
         this.fName = fName;
         this.sName = sName;
         this.email = email;

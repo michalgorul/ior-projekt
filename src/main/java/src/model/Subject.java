@@ -28,7 +28,7 @@ public class Subject {
     @OneToMany(cascade = CascadeType.DETACH, fetch = FetchType.LAZY, mappedBy = "subject")
     private Set<Test> tests = new HashSet<>(10);
 
-    public Subject(String name){
+    public Subject(String name) {
         this.name = name;
     }
 }

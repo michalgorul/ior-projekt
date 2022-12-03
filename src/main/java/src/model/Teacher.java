@@ -21,7 +21,7 @@ public class Teacher extends Person implements Serializable {
 
     private String title;
 
-    public Teacher(Address address, Person person, String title){
+    public Teacher(Address address, Person person, String title) {
         this.title = title;
         this.address = address;
         this.fName = person.getFName();

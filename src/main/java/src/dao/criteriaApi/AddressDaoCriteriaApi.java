@@ -5,7 +5,6 @@ import src.HibernateSession;
 import src.dto.AddressDto;
 import src.model.Address;
 
-import javax.persistence.Tuple;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;

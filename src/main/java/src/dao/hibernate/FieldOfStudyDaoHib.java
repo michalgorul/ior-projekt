@@ -43,7 +43,7 @@ public class FieldOfStudyDaoHib implements Dao<FieldOfStudy> {
         }
         List<FieldOfStudy> fieldOfStudies = new ArrayList<>();
         try {
-            fieldOfStudies = session.createQuery("SELECT f from FieldOfStudyDto f").getResultList();
+            fieldOfStudies = session.createQuery("SELECT f from FieldOfStudy f").getResultList();
         } catch (Exception ex) {
             ex.printStackTrace();
         }

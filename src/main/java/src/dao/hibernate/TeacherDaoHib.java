@@ -29,7 +29,7 @@ public class TeacherDaoHib implements Dao<Teacher> {
         }
         List<Teacher> teachers = new ArrayList<>();
         try {
-            teachers = session.createQuery("SELECT t from TeacherDto t").getResultList();
+            teachers = session.createQuery("SELECT t from Teacher t").getResultList();
         } catch (Exception ex) {
             ex.printStackTrace();
         }

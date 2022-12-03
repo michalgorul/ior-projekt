@@ -20,30 +20,6 @@ public class PersonDaoHib implements Dao<Person> {
         return person;
     }
 
-    public Person getBySurname(String surname) {
-        Session session = HibernateSession.INSTANCE.getSessionFactory().getCurrentSession();
-        if (!session.isOpen()) {
-            session = HibernateSession.INSTANCE.getSessionFactory().openSession();
-        }
-        Transaction transaction = session.getTransaction();
-        transaction.begin();
-        Person person = null;
-        try {
-            person = (Person) session.createQuery("SELECT p.id, p.sName, p.fName, p.email " +
-                            "FROM PersonDto p " +
-                            "WHERE p.sName = :sname")
-                    .setParameter("sname", surname)
-                    .getSingleResult();
-            transaction.commit();
-
-        } catch (Exception ex) {
-            transaction.rollback();
-            ex.printStackTrace();
-        }
-        session.close();
-        return person;
-    }
-
     @Override
     public List<Person> getAll() {
         Session session = HibernateSession.INSTANCE.getSessionFactory().getCurrentSession();
@@ -52,7 +28,7 @@ public class PersonDaoHib implements Dao<Person> {
         }
         List<Person> people = new ArrayList<>();
         try {
-            people = session.createQuery("SELECT p from PersonDto p").getResultList();
+            people = session.createQuery("SELECT p from Person p").getResultList();
         } catch (Exception ex) {
             ex.printStackTrace();
         }

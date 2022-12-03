@@ -4,11 +4,9 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import src.HibernateSession;
 import src.dao.Dao;
-import src.dto.AddressDto;
 import src.dto.StudentDto;
 import src.model.Student;
 
-import javax.persistence.Tuple;
 import java.util.ArrayList;
 import java.util.List;
 

@@ -33,7 +33,7 @@ public class Test {
             foreignKey = @ForeignKey(name = "fk_test_student"))
     private Student student;
 
-    public Test(Date date, int grade, Subject subject, Student student){
+    public Test(Date date, int grade, Subject subject, Student student) {
         this.date = date;
         this.grade = grade;
         this.student = student;

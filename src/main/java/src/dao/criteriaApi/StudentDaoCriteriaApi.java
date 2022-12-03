@@ -3,13 +3,13 @@ package src.dao.criteriaApi;
 import org.hibernate.Session;
 import src.HibernateSession;
 import src.dto.StudentDto;
-import src.dto.SubjectDto;
 import src.model.Student;
 import src.model.Subject;
-import src.model.Test;
 
-import javax.persistence.Tuple;
-import javax.persistence.criteria.*;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Join;
+import javax.persistence.criteria.Root;
 import java.util.List;
 
 public class StudentDaoCriteriaApi {
@@ -25,7 +25,6 @@ public class StudentDaoCriteriaApi {
         // Define WHERE clause
         query.where(cb.equal(root.get("id"), id));
         // Define Tuple projection
-
         query.select(cb.construct(StudentDto.class,
                 root.get("id"),
                 root.get("fName"),

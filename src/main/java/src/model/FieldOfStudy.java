@@ -29,7 +29,7 @@ public class FieldOfStudy implements Serializable {
     @OneToMany(mappedBy = "fieldOfStudy")
     private Set<Student> students = new HashSet<>(10);
 
-    public FieldOfStudy(String name, String type){
+    public FieldOfStudy(String name, String type) {
         this.name = name;
         this.type = type;
     }

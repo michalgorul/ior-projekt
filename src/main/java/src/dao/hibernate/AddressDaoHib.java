@@ -45,7 +45,7 @@ public class AddressDaoHib implements Dao<Address> {
         }
         List<Address> addresses = new ArrayList<>();
         try {
-            addresses = session.createQuery("SELECT a from AddressDto a").getResultList();
+            addresses = session.createQuery("SELECT a from Address a").getResultList();
         } catch (Exception ex) {
             ex.printStackTrace();
         }

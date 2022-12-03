@@ -2,7 +2,7 @@ package src.dto;
 
 import lombok.*;
 
-import javax.persistence.*;
+import javax.persistence.Tuple;
 import java.sql.Date;
 
 @NoArgsConstructor

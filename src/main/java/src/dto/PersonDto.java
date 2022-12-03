@@ -2,8 +2,6 @@ package src.dto;
 
 import lombok.*;
 
-import javax.persistence.*;
-
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
