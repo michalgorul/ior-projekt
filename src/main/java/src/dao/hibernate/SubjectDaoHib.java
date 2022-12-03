@@ -4,7 +4,6 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import src.HibernateSession;
 import src.dao.Dao;
-import src.dto.AddressDto;
 import src.dto.SubjectDto;
 import src.model.Subject;
 
@@ -26,21 +25,21 @@ public class SubjectDaoHib implements Dao<Subject> {
         return null;
     }
 
-    public List<SubjectDto> getByName(String name) {
+    public SubjectDto getByNameHib(String name) {
         Session session = HibernateSession.INSTANCE.getSessionFactory().openSession();
-        List<SubjectDto> subjectDtos = new ArrayList<>();
+        SubjectDto subjectDto = null;
         try {
-            subjectDtos = session.createQuery("SELECT " +
+            subjectDto = session.createQuery("SELECT " +
                             "new src.dto.SubjectDto(s.id, s.name) " +
                             "from Subject s " +
                             "WHERE s.name = :name", SubjectDto.class)
                     .setParameter("name", name)
-                    .getResultList();
+                    .getSingleResult();
         } catch (Exception ex) {
             ex.printStackTrace();
         }
         session.close();
-        return subjectDtos;
+        return subjectDto;
     }
 
     @Override

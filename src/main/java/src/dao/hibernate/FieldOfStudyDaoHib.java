@@ -5,8 +5,6 @@ import org.hibernate.Transaction;
 import src.HibernateSession;
 import src.dao.Dao;
 import src.dto.FieldOfStudyDto;
-import src.dto.SubjectDto;
-import src.model.Address;
 import src.model.FieldOfStudy;
 
 import java.util.ArrayList;
@@ -20,7 +18,7 @@ public class FieldOfStudyDaoHib implements Dao<FieldOfStudy> {
         return fieldOfStudy;
     }
 
-    public List<FieldOfStudyDto> getByType(String type) {
+    public List<FieldOfStudyDto> getByTypeHib(String type) {
         Session session = HibernateSession.INSTANCE.getSessionFactory().openSession();
         List<FieldOfStudyDto> fieldOfStudies = new ArrayList<>();
         try {
