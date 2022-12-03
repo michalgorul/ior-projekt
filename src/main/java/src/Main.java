@@ -1,7 +1,5 @@
 package src;
 
-import src.dao.hibernate.PersonDaoHib;
-import src.loader.Loader;
 import src.queries.Queries;
 
 public class Main {
@@ -11,8 +9,9 @@ public class Main {
 //        loader.load();
 
         Queries queries = new Queries();
-//        queries.conditionProjection();
+        queries.conditionProjection();
         queries.joinOperation();
+        queries.aggregation();
 
     }
 }

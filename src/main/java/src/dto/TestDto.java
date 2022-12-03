@@ -34,4 +34,21 @@ public class TestDto {
         System.out.printf("\tTest(date=%s, grade=%d, studentFName=%s, studentSName=%s, subjectName=%s)\n",
                 date, grade, fName, sName, subjectName);
     }
+
+    public static void printTestTupleWithAvg(Tuple tuple) {
+        Integer indexNo = null;
+        String fName = "";
+        String sName = "";
+        Double avg = null;
+        try {
+            indexNo = (Integer) tuple.get(0);
+            fName = (String) tuple.get(1);
+            sName = (String) tuple.get(2);
+            avg = (Double) tuple.get(3);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        System.out.printf("\tAvgTest(indexNo=%s, studentFName=%s, studentSName=%s, avgGrade=%1.2f)\n",
+                indexNo, fName, sName, avg);
+    }
 }

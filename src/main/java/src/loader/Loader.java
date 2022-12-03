@@ -100,7 +100,7 @@ public class Loader {
 
         Student student1 = new Student(session.load(Address.class, 1), person1, 282642, 2,
                 session.load(FieldOfStudy.class, 1));
-        Student student2 = new Student(session.load(Address.class, 2), person2, 282642, 1,
+        Student student2 = new Student(session.load(Address.class, 2), person2, 252642, 1,
                 session.load(FieldOfStudy.class, 2));
         Student student3 = new Student(session.load(Address.class, 1), person3, 282542, 3,
                 session.load(FieldOfStudy.class, 2));

@@ -40,4 +40,42 @@ public class TestDaoCriteriaApi {
         return session.createQuery(query).getResultList();
     }
 
+    public Double getGradeAvgByStudentIdCriteria(int id) {
+        Session session = HibernateSession.INSTANCE.getSessionFactory().openSession();
+
+        // Create query
+        CriteriaBuilder cb = session.getCriteriaBuilder();
+        CriteriaQuery<Double> query = cb.createQuery(Double.class);
+        // Define FROM clause
+        Root<Test> root = query.from(Test.class);
+        // Define JOIN clauses
+        Join<Test, Student> student = root.join("student");
+        // Define WHERE clause
+        query.where(cb.equal(student.get("id"), id));
+        // Define Double projection
+        query.select(cb.avg(root.get("grade")));
+
+        // Execute query
+        return session.createQuery(query).getSingleResult();
+    }
+
+    public List<Tuple> getGradeAvgHavingCriteria() {
+        Session session = HibernateSession.INSTANCE.getSessionFactory().openSession();
+
+        // Create query
+        CriteriaBuilder cb = session.getCriteriaBuilder();
+        CriteriaQuery<Tuple> query = cb.createQuery(Tuple.class);
+        // Define FROM clause
+        Root<Test> root = query.from(Test.class);
+        // Define JOIN clauses
+        Join<Test, Student> student = root.join("student");
+        // Define Tuple projection
+        query.multiselect(student.get("indexNo"), student.get("fName"), student.get("sName"), cb.avg(root.get("grade")))
+                .groupBy(student.get("indexNo"), student.get("fName"), student.get("sName") )
+                .having(cb.greaterThanOrEqualTo(cb.count(root.get("grade")), 2L));
+
+        // Execute query
+        return session.createQuery(query).getResultList();
+    }
+
 }

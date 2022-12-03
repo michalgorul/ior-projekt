@@ -42,6 +42,42 @@ public class TestDaoHib implements Dao<Test> {
         return tuples;
     }
 
+    public Double getGradeAvgByStudentIdHib(int id) {
+        Session session = HibernateSession.INSTANCE.getSessionFactory().openSession();
+        Double avg = null;
+        try {
+            avg = session.createQuery("SELECT " +
+                            "AVG(t.grade) " +
+                            "from Test t " +
+                            "join t.student " +
+                            "where t.student.id = :id", Double.class)
+                    .setParameter("id", id)
+                    .getSingleResult();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        session.close();
+        return avg;
+    }
+
+    public List<Tuple> getGradeAvgHavingHib() {
+        Session session = HibernateSession.INSTANCE.getSessionFactory().openSession();
+        List<Tuple> tuples = new ArrayList<>();
+        try {
+            tuples = session.createQuery("SELECT " +
+                            "s.indexNo, s.fName, s.sName, AVG(t.grade) " +
+                            "from Test t " +
+                            "join t.student s " +
+                            "group by s.indexNo, s.fName, s.sName " +
+                            "having count(t.grade) >= 2", Tuple.class)
+                    .getResultList();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        session.close();
+        return tuples;
+    }
+
     public void save(Test test) {
         Session session = HibernateSession.INSTANCE.getSessionFactory().getCurrentSession();
         if (!session.isOpen()) {
@@ -67,7 +103,7 @@ public class TestDaoHib implements Dao<Test> {
         }
         List<Test> tests = new ArrayList<>();
         try {
-            tests = session.createQuery("SELECT t from TestDto t").getResultList();
+            tests = session.createQuery("SELECT t from Test t").getResultList();
         } catch (Exception ex) {
             ex.printStackTrace();
         }
