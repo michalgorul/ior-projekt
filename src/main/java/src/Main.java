@@ -11,7 +11,8 @@ public class Main {
 //        loader.load();
 
         Queries queries = new Queries();
-        queries.conditionProjection();
+//        queries.conditionProjection();
+        queries.joinOperation();
 
     }
 }

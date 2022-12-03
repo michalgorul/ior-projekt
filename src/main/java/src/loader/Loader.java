@@ -193,11 +193,17 @@ public class Loader {
                 session.load(Student.class, 4));
         Test test8 = new Test(new Date(1669902466884L), 2, session.load(Subject.class, 8),
                 session.load(Student.class, 2));
+        Test test9 = new Test(new Date(1669909996884L), 5, session.load(Subject.class, 1),
+                session.load(Student.class, 1));
+        Test test10 = new Test(new Date(1669957466884L), 4, session.load(Subject.class, 1),
+                session.load(Student.class, 1));
+        Test test11 = new Test(new Date(1669807466884L), 3, session.load(Subject.class, 1),
+                session.load(Student.class, 1));
 
         transaction.commit();
         session.close();
 
-        Stream.of(test1, test2, test3, test4, test5, test6, test7, test8)
+        Stream.of(test1, test2, test3, test4, test5, test6, test7, test8, test9, test10, test11)
                 .collect(Collectors.toList())
                 .forEach(event -> testDaoHib.save((event)));
 

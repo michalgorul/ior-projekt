@@ -19,7 +19,7 @@ public class AddressDaoHib implements Dao<Address> {
         return address;
     }
 
-    public AddressDto getByIdJpql(int id) {
+    public AddressDto getByIdHib(int id) {
         Session session = HibernateSession.INSTANCE.getSessionFactory().openSession();
         AddressDto address = null;
         try {

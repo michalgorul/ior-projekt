@@ -4,49 +4,39 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import src.HibernateSession;
 import src.dao.Dao;
+import src.dto.AddressDto;
+import src.dto.StudentDto;
 import src.model.Student;
 
+import javax.persistence.Tuple;
 import java.util.ArrayList;
 import java.util.List;
 
 public class StudentDaoHib implements Dao<Student> {
 
-    public Student getById(int id) {
-        Session session = HibernateSession.INSTANCE.getSessionFactory().getCurrentSession();
-        if (!session.isOpen()) {
-            session = HibernateSession.INSTANCE.getSessionFactory().openSession();
+    public StudentDto getByIdHib(int id) {
+        Session session = HibernateSession.INSTANCE.getSessionFactory().openSession();
+        StudentDto studentDto = null;
+        try {
+            studentDto = session.createQuery("SELECT " +
+                            "new src.dto.StudentDto(s.id, s.fName, s.sName, s.email, s.indexNo, s.semester) " +
+                            "from Student s " +
+                            "WHERE s.id = :id", StudentDto.class)
+                    .setParameter("id", id)
+                    .getSingleResult();
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
-        Student student = session.get(Student.class, id);
+
         session.close();
-        return student;
+        return studentDto;
     }
 
-//    @Transactional
-//    public List<Student> getBySurname(String surname) {
-//        Session session = HibernateSession.INSTANCE.getSessionFactory().getCurrentSession();
-//        if (!session.isOpen()) {
-//            session = HibernateSession.INSTANCE.getSessionFactory().openSession();
-//        }
-//        Transaction transaction = session.getTransaction();
-//        transaction.begin();
-//        List<Student> students = new ArrayList<>();
-//        try {
-//            Hibernate.initialize(students);
-//            students = session.createQuery("SELECT s " +
-//                            "FROM Student s left join fetch FieldOfStudy f on s.fieldOfStudy.id =" +
-//                            " f.id " +
-//                            "WHERE s.sName = :sname")
-//                    .setParameter("sname", surname)
-//                    .getResultList();
-//            transaction.commit();
-//
-//        } catch (Exception ex) {
-//            transaction.rollback();
-//            ex.printStackTrace();
-//        }
-//        session.close();
-//        return students;
-//    }
+
+    @Override
+    public Student getById(int id) {
+        return null;
+    }
 
     @Override
     public List<Student> getAll() {
@@ -56,7 +46,7 @@ public class StudentDaoHib implements Dao<Student> {
         }
         List<Student> students = new ArrayList<>();
         try {
-            students = session.createQuery("SELECT s from StudentDto s").getResultList();
+            students = session.createQuery("SELECT s from Student s").getResultList();
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -112,4 +102,21 @@ public class StudentDaoHib implements Dao<Student> {
         return studentMerged;
     }
 
+    public List<String> getSubjectsByStudentIdHib(int id) {
+        Session session = HibernateSession.INSTANCE.getSessionFactory().openSession();
+        List<String> subjects = new ArrayList<>();
+        try {
+            subjects = session.createQuery("SELECT " +
+                            "s.name " +
+                            "from Student t " +
+                            "join t.subjects s " +
+                            "where t.id = :id", String.class)
+                    .setParameter("id", id)
+                    .getResultList();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        session.close();
+        return subjects;
+    }
 }

@@ -6,6 +6,7 @@ import src.HibernateSession;
 import src.dao.Dao;
 import src.model.Test;
 
+import javax.persistence.Tuple;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,6 +21,25 @@ public class TestDaoHib implements Dao<Test> {
         Test test = session.get(Test.class, id);
         session.close();
         return test;
+    }
+
+    public List<Tuple> getByStudentIdHib(int id) {
+        Session session = HibernateSession.INSTANCE.getSessionFactory().openSession();
+        List<Tuple> tuples = new ArrayList<>();
+        try {
+            tuples = session.createQuery("SELECT " +
+                            "t.date, t.grade, t.student.fName, t.student.sName, t.subject.name " +
+                            "from Test t " +
+                            "join t.student " +
+                            "join t.subject " +
+                            "where t.student.id = :id", Tuple.class)
+                    .setParameter("id", id)
+                    .getResultList();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        session.close();
+        return tuples;
     }
 
     public void save(Test test) {
